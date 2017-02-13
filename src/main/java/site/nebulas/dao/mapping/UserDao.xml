@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.nebulas.dao.UserDao">
+
+
+	<select id="findByUserAccount" resultType="User">
+		select 
+			user_id userId, 
+			user_account userAccount,
+			password password,
+			salt salt, 
+			add_time addTime
+		from ad_user 
+		where user_account = #{userAccount}
+	</select>
+	
+	<insert id="createUser">
+		insert into user(role_id,user_account,user_mailbox,password,salt,real_name,add_time,is_lock,add_man,is_delete) 
+		values(#{roleId},#{userAccount},#{userMailbox},#{password}, #{salt},#{realName},#{addTime},#{isLock},#{addMan},#{isDelete})
+	</insert>
+	
+	<update id="updateUser">
+		update user
+		<set>
+			<if test="roleId !=null">
+				role_id = #{roleId},
+			</if>
+			<if test="userAccount !=null and userAccount !='' ">
+				user_account = #{userAccount},
+			</if>
+			<if test="userMailbox !=null and userMailbox !='' ">
+				user_mailbox = #{userMailbox},
+			</if>
+			<if test="password !=null and password !='' ">
+				password = #{password},
+			</if>
+			<if test="salt !=null and salt !='' ">
+				salt = #{salt},
+			</if>
+			<if test="addTime !=null and addTime !='' ">
+				real_name = #{addTime},
+			</if>
+			<if test="isLock !=null">
+				is_lock = #{isLock},
+			</if>
+			<if test="addMan !=null and addMan !='' ">
+				add_man = #{addMan},
+			</if>
+			<if test="isDelete !=null">
+				is_delete = #{isDelete},
+			</if>
+		</set>
+		where user_account = #{userAccount}
+	</update>
+	
+
+</mapper>
