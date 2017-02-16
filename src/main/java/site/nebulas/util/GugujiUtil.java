@@ -3,8 +3,12 @@ package site.nebulas.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -28,6 +32,8 @@ public class GugujiUtil {
     private static final String printPaper = "http://open.memobird.cn/home/printpaper";
     //获取打印状态
     private static final String printStatus ="http://open.memobird.cn/home/getprintstatus";
+
+    private static final String url = "http://php.weather.sina.com.cn/xml.php?city=%C3%F6%BA%EE&password=DJOYnieT8234jlsK&day=0";
     /**
      * 账号关联
      * return -1为失败，其他为showapi_userid
@@ -97,7 +103,7 @@ public class GugujiUtil {
      * 获取纸条打印状态
      * return 1为已打印或获取失败，其他为未打印
      * */
-    private static int getPrintStatus(Integer printcontentid){
+    public static int getPrintStatus(Integer printcontentid){
         String statusURL = printStatus +"?ak="+ak+"&timestamp="+URLEncoder.encode(DateUtil.getTime())+"&printcontentid="+printcontentid;
         String content = HTTPUtil.get(statusURL);
         JSONObject parse = (JSONObject) JSON.parse(content);
@@ -115,9 +121,50 @@ public class GugujiUtil {
     }
 
 
+
+    public static String getWeather(){
+        Document doc = null;
+        StringBuffer sb = new StringBuffer();
+        try {
+            doc = Jsoup.connect(url).get();
+            String city = doc.getElementsByTag("city").text(); // 城市
+            String udatetime = doc.getElementsByTag("udatetime").text(); // 更新时间
+
+            String status1 = doc.getElementsByTag("status1").text();
+            String direction1 = doc.getElementsByTag("direction1").text();
+            String power1 = doc.getElementsByTag("power1").text();
+            String temperature1 = doc.getElementsByTag("temperature1").text();
+
+            String status2 = doc.getElementsByTag("status2").text();
+            String direction2 = doc.getElementsByTag("direction2").text();
+            String power2 = doc.getElementsByTag("power2").text();
+            String temperature2 = doc.getElementsByTag("temperature2").text();
+
+            String chy_shuoming = doc.getElementsByTag("chy_shuoming").text();
+            String gm_s = doc.getElementsByTag("gm_s").text();
+            String yd_s = doc.getElementsByTag("yd_s").text();
+
+
+            sb.append(city + "\n");
+            sb.append("白天 " + temperature1 + "度 " + status1 + "\n" + direction1 + " 风力" + power1 + "级\n");
+            sb.append("夜间 " + temperature2 + "度 " + status2 + "\n" + direction2 + " 风力" + power2 + "级\n\n");
+            sb.append("适合穿"+ chy_shuoming + "\n\n");
+            sb.append(gm_s + "\n\n");
+            sb.append(yd_s + "\n\n");
+            sb.append("更新时间：" + udatetime);
+
+            logger.info(doc.html());
+            logger.info("--------------");
+            logger.info(sb.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
         String str = "HELLO WORLD!\n 你好";
-        scripPrint(str);
+        scripPrint(getWeather());
 
         //getPrintStatus(2889581);
     }
