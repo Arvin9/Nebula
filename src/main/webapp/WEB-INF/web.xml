@@ -21,7 +21,8 @@
 	    <param-value>
 	    	classpath:spring.xml,
 	    	classpath:spring-mybatis.xml,
-	    	classpath:spring-shiro-web.xml
+	    	classpath:spring-shiro-web.xml,
+			classpath:spring-redis.xml
 	    </param-value>
 	</context-param>
 	<!-- /Spring配置 -->
