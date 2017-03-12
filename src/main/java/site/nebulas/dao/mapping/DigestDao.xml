@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.nebulas.dao.DigestDao">
+
+
+	<select id="queryByParam" resultType="Digest">
+		select 
+			id id,
+			title title,
+			content content,
+			provenance provenance,
+			read_quantity readQuantity,
+			add_time addTime
+		from digest
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert">
+		insert into digest (
+			title ,
+			content ,
+			provenance ,
+			read_quantity ,
+			add_time
+		) values(
+			#{title},
+			#{content},
+			#{provenance},
+			#{readQuantity},
+			#{addTime}
+		)
+	</insert>
+	
+	<update id="update">
+		update digest
+		<set>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="content != null and content != ''">
+				content = #{content},
+			</if>
+			<if test="provenance != null and provenance != ''">
+				provenance = #{provenance},
+			</if>
+			<if test="readQuantity != null and readQuantity != ''">
+				read_quantity = #{readQuantity},
+			</if>
+			<if test="addTime !=null and addTime != ''">
+				add_time = #{addTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+</mapper>
