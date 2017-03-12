@@ -13,12 +13,6 @@
 	<task:annotation-driven/>
 	 
 	<context:annotation-config/>
-	  
-    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
-    
-    <context:component-scan base-package="site.nebulas"/>
-    <!--自动扫描含有@Service将其注入为bean -->
-	<context:component-scan base-package="site.nebulas.service" />
 
 	<!-- 加载所有配置文件 -->
 	<context:property-placeholder location="classpath:*.properties" ignore-unresolvable="true"/>

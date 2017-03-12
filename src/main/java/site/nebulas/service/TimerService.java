@@ -14,5 +14,9 @@ public class TimerService {
      public void printWeather(){
          log.info("进入测试");
          GugujiUtil.scripPrint(GugujiUtil.getWeather());
-     }  
+     }
+    @Scheduled(cron="0 */1 * * * ?")
+    public void test(){
+        log.info("进入测试");
+    }
 }
